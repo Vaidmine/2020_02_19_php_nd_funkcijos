@@ -43,29 +43,58 @@ Jegu iš eilės eina keli skaitmenys, juos į tagą reikią dėti kartu <br>
 (h1 atsidaro prieš pirmą ir užsidaro po paskutinio) <br>
 Keitimui naudokite pirmo uždavinio funkciją ir preg_replace_callback(). <br><br>';
 
-echo 'MD5 hash - taking a string of an any length and encoding it into a 128-bit hash output. Sample: <br>';
-echo 'preg_replace_callback — Perform a regular expression search and replace using a callback';
+echo 'MD5 hash - taking a string of an any length and encoding it into a 128-bit hash output <br>';
+echo 'preg_replace_callback — Perform a regular expression search and replace using a callback <br>';
+echo ' time() funkcija generuoja sekundziu kieki nuo 70-uju<br>';
 
 $randomString = md5(time());
 echo "<br><br><b>Sugeneruojame atsitiktinį 'hash' numerį:</b><br>";
 echo $randomString . '<br><br>';
 
-$numText = preg_replace_callback('/\D+/', "letterRemoval", $randomString);
-$finalText = preg_replace_callback('/\d+/', "letterShift", $numText);
+// VIENAS SRENDIMO BUDAS
+// $numText = preg_replace_callback('/\D+/', "letterRemoval", $randomString);
+// $finalText = preg_replace_callback('/\d+/', "letterShift", $numText);
 
-function letterRemoval($matches){
-    return ' '; 
+// function letterRemoval($matches){
+//     return ' '; 
+// }
+
+// function tagGenerating($text){
+//     return $text;
+// }
+
+// function letterShift($matches) {
+//     return '<h1>'.$matches[0].'</h1>';
+// }
+
+// echo tagGenerating($finalText);
+
+function h1($text){
+    if(is_array($text)) {
+        $text = $text[0];
+    }
+    return '<h1 style = "display:inline;">'.$text. '</h1>';
 }
 
-function tagGenerating($text){
-    return $text;
-}
+$pakeistasKodas = preg_replace_callback('/\d+/', function($match){
+    _d($match);
+    return h1($match[0]);
+}, $randomString );
 
-function letterShift($matches) {
-    return '<h1>'.$matches[0].'</h1>';
-}
+echo "<br><br><b> Visu skaicius sudedame į h1, o raidės lieka, kaip buvusios </b><br>";
+echo $pakeistasKodas;
 
-echo tagGenerating($finalText);
+//****************/
+$pakeistasKodas = preg_replace_callback('/\d+/', function($match){
+    _d($match);
+    return '<h1 style = "display:inline;">'.$match[0]. '</h1>';
+ 
+}, $randomString );
+
+echo '<br> Kitas užrašymas <br>';
+echo $pakeistasKodas;
+echo '<br>    <br>';
+
  
 ?>
 
@@ -76,8 +105,8 @@ echo 'Parašykite funkciją, kuri skaičiuotų,  iš kiek sveikų skaičių jos 
 (išskyrus vienetą ir patį save) <br>
 Argumentą užrašykite taip, kad būtų galima įvesti tik sveiką skaičių. <br>';
 
-function pirminiaiSkaiciai(int $number)
-{
+function pirminiaiSkaiciai(int $number) {
+    $dviders = []; 
     global $dividers; // importavimui del syntax
 
     for ($i = 2; $i < $number; $i++) { // 2 nes negali dalintis is 1 ir pacio saves
@@ -141,6 +170,7 @@ echo '</pre>';
 $ilgis = count($array6);
 
 for ($i = 0; $i < $ilgis; $i++) {
+    // if (pirminiaiSkaiciai($array6[$i]) == 0) {
     if (pirminiaiSkaiciai($array6[$i]) == 0) {
         unset($array6[$i]); //istrina viska
     }
@@ -149,6 +179,30 @@ echo '<pre>';
 echo 'masyvas po istrynimo <br>';
 print_r($array6);
 echo '</pre>';
+
+
+
+/*  
+$array2 = [];
+
+for ($i=0; $i < 100; $i++) {​​ 
+    $array2[] = rand(333, 777);     
+
+}​​
+echo 'Before removal';
+_dc($array2);
+
+foreach ($array2 as $key => &$value) {​​
+    if (countDividers($value)['count'] === 0) {​​ 
+        unset($array2[$key]);
+    }​​
+}​​
+echo 'After removal';
+_dc($array2);
+
+unset($key, $value);
+
+*/
 
 ?>
 
@@ -193,19 +247,7 @@ echo '</pre>';
 echo '<br>';
 echo 'Suskaičiuokite septinto uždavinio elementų, kurie nėra masyvai, sumą. <br>';
 
-// function suma7(){
-// $sum = 0;
-// foreach ($array7 as $key => $value) {
-//     # code...
-// }
 
-// }
-
-// echo '<pre>';
-// echo '<br>';
-// print_r (array_sum($array7[$i]));
-
-// echo '</pre>';
 
 ?>
 
